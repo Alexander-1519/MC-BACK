@@ -1,0 +1,41 @@
+сервис для мастеров (рестницы, барбер, ноготочки)
+очки кармы
+
+роли: клиент, админ, модератор
+сущности: 
+	ЮЗЕР:
+		-firstName, lastName, age, username, mail, password, imageURL, role, LIST<favorites>, List<ORder>, LIST<> NOTIFICATION, CITY_ID, 
+		FAVORITES_ID 
+	МАСТЕР:
+		-firstName, lastName, age, username, mail, password, imageURL, role, LIST<favorites>, List<ORder>, LIST<> NOTIFICATION, CITY_ID,
+		 LAVKA_ID, MASTERSKAYA_ID, Expirience, Statistic_Id, LIST<> comments, стаж, FAVORITES_ID , CATEGORY_ID
+	LAVKA:
+		-myself_info, uslugi_id, DateUSLUGI_id, PORTFOLIO_ID, COMMMENTS_ID
+	USLUGI:
+		-id, uslugaName, price
+	DateUSLUGI:
+		-id, dateUslugi
+	PORTFOLIO:
+		-id, image_url
+	COMMETNS:
+		-id, comment, userId, masterId
+	STATISTIC:
+		- пока из ORDER берем запросом (кол-во заказов сделанных, рейтинг)
+	ORDER:
+		-id, List<> uslugi, totalPrice, userID, masterId, approved
+	MASTERSKAYA:
+		-id, LIST<> orders, LIST<> notes
+	NOTE:
+		-id, message
+	NOTIFICATION:
+		-id, user_id, message
+	FAVORITES:
+		-id, master_id, user_id
+	CATEGORY:
+		-id, categoryName
+	CITY:
+		-id, cityName, oblast'_id
+	OBLAST':
+		-id, oblastName
+	
+	
