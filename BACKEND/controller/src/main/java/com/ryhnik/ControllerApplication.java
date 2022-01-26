@@ -1,4 +1,4 @@
-package com.ryhnik.controller;
+package com.ryhnik;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
