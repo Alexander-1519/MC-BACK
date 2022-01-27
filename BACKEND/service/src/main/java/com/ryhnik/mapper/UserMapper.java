@@ -1,13 +1,21 @@
 package com.ryhnik.mapper;
 
-import com.ryhnik.dao.user.UserOutputDto;
+import com.ryhnik.dto.core.PageDto;
+import com.ryhnik.dto.user.UserInputCreateDto;
+import com.ryhnik.dto.user.UserOutputDto;
 import com.ryhnik.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "role", source = "role.name.name")
+    @Mapping(target = "role", source = "role.name")
     UserOutputDto toUserOutputDto(User user);
+
+    User toUser(UserInputCreateDto dto);
+
+    PageDto<UserOutputDto> toPagedUserOutputDto(Page<User> users, Pageable pageable);
 }

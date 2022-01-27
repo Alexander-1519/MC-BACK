@@ -16,4 +16,13 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.6.2</version>
+        </dependency>
+    </dependencies>
+
 </project>

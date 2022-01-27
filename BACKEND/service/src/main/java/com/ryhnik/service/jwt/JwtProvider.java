@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 public class JwtProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtProvider.class);
@@ -29,6 +28,10 @@ public class JwtProvider {
     @Value("${jwt.days}")
     private String days;
     private final UserRepository userRepository;
+
+    public JwtProvider(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public String generateToken(String login) {
         User user = userRepository.findByUsername(login)

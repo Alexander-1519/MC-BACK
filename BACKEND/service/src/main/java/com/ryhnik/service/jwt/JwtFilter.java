@@ -18,13 +18,17 @@ import java.io.IOException;
 import static io.jsonwebtoken.lang.Strings.hasText;
 
 @Component
-@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
 
     private final JwtProvider jwtProvider;
     private final UserSecurityService userSecurityService;
+
+    public JwtFilter(JwtProvider jwtProvider, UserSecurityService userSecurityService) {
+        this.jwtProvider = jwtProvider;
+        this.userSecurityService = userSecurityService;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
