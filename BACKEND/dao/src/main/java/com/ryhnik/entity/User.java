@@ -3,12 +3,10 @@ package com.ryhnik.entity;
 import com.ryhnik.entity.core.BaseAuditableEntity;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -40,6 +38,24 @@ public class User extends BaseAuditableEntity {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany
+    private List<Master> masters;
+
+    public void addMaster(Master master){
+        if(masters == null){
+            masters = new ArrayList<>();
+        }
+        masters.add(master);
+    }
+
+    public List<Master> getMaster() {
+        return masters;
+    }
+
+    public void setMaster(List<Master> master) {
+        this.masters = master;
+    }
 
     public String getFirstName() {
         return firstName;

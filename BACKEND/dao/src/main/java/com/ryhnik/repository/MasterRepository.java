@@ -1,0 +1,22 @@
+package com.ryhnik.repository;
+
+import com.ryhnik.entity.Master;
+import com.ryhnik.entity.MasterCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.time.LocalDate;
+
+public interface MasterRepository extends JpaRepository<Master, Long> {
+
+    @Query("""
+       SELECT m FROM Master m
+       WHERE m.category = :category
+       AND m.startedAt <= :experience
+        """)
+    Page<Master> findAll(MasterCategory category,
+                         LocalDate experience,
+                         Pageable pageable);
+}

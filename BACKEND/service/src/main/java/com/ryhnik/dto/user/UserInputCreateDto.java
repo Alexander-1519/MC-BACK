@@ -1,5 +1,7 @@
 package com.ryhnik.dto.user;
 
+import com.ryhnik.entity.MasterCategory;
+
 public class UserInputCreateDto {
 
     private String firstName;
@@ -9,6 +11,33 @@ public class UserInputCreateDto {
     private String email;
     private String phone;
     private UserRoleDto role;
+    private String info;
+    private Long startedAt;
+    private MasterCategory category;
+
+    public MasterCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MasterCategory category) {
+        this.category = category;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Long getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Long startedAt) {
+        this.startedAt = startedAt;
+    }
 
     public String getFirstName() {
         return firstName;

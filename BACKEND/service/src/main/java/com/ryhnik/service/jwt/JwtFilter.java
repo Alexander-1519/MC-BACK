@@ -2,7 +2,6 @@ package com.ryhnik.service.jwt;
 
 import com.ryhnik.entity.SecurityUser;
 import com.ryhnik.service.UserSecurityService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
