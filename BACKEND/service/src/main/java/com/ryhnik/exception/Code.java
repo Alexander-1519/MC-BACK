@@ -2,6 +2,8 @@ package com.ryhnik.exception;
 
 public enum Code {
 
+    VALIDATION_FAILED(101),
+
     UNEXPECTED(500),
     SYSTEM_ERROR(501),
     CONVERTING_FILE_ERROR(502);

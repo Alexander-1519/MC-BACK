@@ -42,6 +42,8 @@ public class User extends BaseAuditableEntity {
     @OneToMany
     private List<Master> masters;
 
+    private Boolean approved;
+
     public void addMaster(Master master){
         if(masters == null){
             masters = new ArrayList<>();
@@ -127,5 +129,21 @@ public class User extends BaseAuditableEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<Master> getMasters() {
+        return masters;
+    }
+
+    public void setMasters(List<Master> masters) {
+        this.masters = masters;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 }

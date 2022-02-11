@@ -17,6 +17,9 @@ public class Master extends BaseAuditableEntity {
     @Enumerated(EnumType.STRING)
     private MasterCategory category;
 
+    @ManyToOne
+    private User user;
+
     public MasterCategory getCategory() {
         return category;
     }
@@ -37,7 +40,17 @@ public class Master extends BaseAuditableEntity {
         return info;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void setInfo(String info) {
+
+
         this.info = info;
     }
 }

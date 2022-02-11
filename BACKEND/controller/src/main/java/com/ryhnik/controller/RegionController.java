@@ -36,7 +36,7 @@ public class RegionController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<RegionOutputDto> save(@RequestBody RegionInputCreateDto createDto){
+    public ResponseEntity<RegionOutputDto> save(@RequestBody RegionInputCreateDto createDto) {
         Region region = regionService.save(regionMapper.toRegion(createDto));
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -44,7 +44,7 @@ public class RegionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RegionOutputDto> getById(@PathVariable Long id){
+    public ResponseEntity<RegionOutputDto> getById(@PathVariable Long id) {
         Region region = regionService.getById(id);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -53,7 +53,7 @@ public class RegionController {
 
     @GetMapping
     public ResponseEntity<PageDto<RegionOutputDto>> getAll(@RequestParam(required = false, defaultValue = "") String name,
-                                                           Pageable pageable){
+                                                           Pageable pageable) {
         Page<Region> regions = regionService.findAll(name, pageable);
 
         return ResponseEntity.status(HttpStatus.OK)

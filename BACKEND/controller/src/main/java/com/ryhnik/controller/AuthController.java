@@ -1,9 +1,6 @@
 package com.ryhnik.controller;
 
-import com.ryhnik.dto.user.UserAuth;
-import com.ryhnik.dto.user.UserAuthRequest;
-import com.ryhnik.dto.user.UserInputCreateDto;
-import com.ryhnik.dto.user.UserOutputDto;
+import com.ryhnik.dto.user.*;
 import com.ryhnik.entity.User;
 import com.ryhnik.mapper.UserMapper;
 import com.ryhnik.service.UserService;
@@ -11,10 +8,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(value = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,5 +40,22 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userAuth);
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<Void> checkEmail(@RequestBody @Valid CheckEmailDto emailDto) {
+        userService.checkEmail(emailDto.getEmail());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+    }
+
+    @PostMapping("/approve-account")
+    public ResponseEntity<Void> approveAccount(@RequestParam String email,
+                                               Principal principal){
+        userService.approveAccount(email, principal.getName());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
     }
 }

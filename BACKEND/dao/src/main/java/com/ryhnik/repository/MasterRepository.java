@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public interface MasterRepository extends JpaRepository<Master, Long> {
 
@@ -19,4 +20,12 @@ public interface MasterRepository extends JpaRepository<Master, Long> {
     Page<Master> findAll(MasterCategory category,
                          LocalDate experience,
                          Pageable pageable);
+
+    @Query("""
+            SELECT m FROM Master m
+            JOIN m.user u
+            WHERE u.username = :username
+            AND m.id = :masterId
+            """)
+    Optional<Master> findByUsernameAndMasterId(String username, Long masterId);
 }

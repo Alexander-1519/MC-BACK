@@ -4,7 +4,10 @@ import com.ryhnik.dto.user.UserAuth;
 import com.ryhnik.dto.user.UserAuthRequest;
 import com.ryhnik.dto.user.UserInputCreateDto;
 import com.ryhnik.dto.user.UserRoleDto;
-import com.ryhnik.entity.*;
+import com.ryhnik.entity.Master;
+import com.ryhnik.entity.User;
+import com.ryhnik.entity.UserRole;
+import com.ryhnik.entity.UserRoleName;
 import com.ryhnik.exception.Code;
 import com.ryhnik.exception.EntityNotFoundException;
 import com.ryhnik.exception.ExceptionBuilder;
@@ -30,19 +33,22 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final MasterRepository masterRepository;
+    private final EmailService emailService;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtProvider jwtProvider,
                        RoleRepository roleRepository,
                        UserMapper userMapper,
-                       MasterRepository masterRepository) {
+                       MasterRepository masterRepository,
+                       EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
         this.masterRepository = masterRepository;
+        this.emailService = emailService;
     }
 
     public User registerUser(UserInputCreateDto createDto) {
@@ -73,6 +79,8 @@ public class UserService {
 
         user.setRole(role);
 
+        emailService.sendApproveLink(createDto.getEmail());
+
         return userRepository.save(user);
     }
 
@@ -94,5 +102,30 @@ public class UserService {
         }
 
         return new UserAuth(jwtProvider.generateToken(user.getUsername()), user.getRole().getName().name());
+    }
+
+    public void checkEmail(String email) {
+        boolean existsByEmail = userRepository.existsByEmail(email);
+        if (existsByEmail) {
+            throw ExceptionBuilder.builder(Code.UNEXPECTED)
+                    .withMessage("Email already exists")
+                    .build(MasterClubException.class);
+        }
+    }
+
+    public void approveAccount(String email, String username) {
+        boolean existsByEmailAndUsername = userRepository.existsByEmailAndUsername(email, username);
+        if(!existsByEmailAndUsername){
+            throw ExceptionBuilder.builder(Code.UNEXPECTED)
+                    .withMessage("You have no permission to this operation")
+                    .build(MasterClubException.class);
+        }
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+
+
+        user.setApproved(true);
+        userRepository.save(user);
     }
 }
