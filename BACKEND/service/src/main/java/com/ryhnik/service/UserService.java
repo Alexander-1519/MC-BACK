@@ -64,24 +64,29 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        if (createDto.getRole() == UserRoleDto.MASTER) {
-            Master master = new Master();
-            master.setInfo(createDto.getInfo());
-            master.setStartedAt(LocalDate.ofEpochDay(createDto.getStartedAt()));
-            master.setCategory(createDto.getCategory());
-            Master savedMaster = masterRepository.save(master);
-
-            user.addMaster(savedMaster);
-        }
-
         UserRole role = roleRepository.findByName(UserRoleName.ROLE_USER)
                 .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
 
         user.setRole(role);
 
+        User saved = userRepository.save(user);
+
+        if (createDto.getRole() == UserRoleDto.MASTER) {
+            Master master = new Master();
+            master.setInfo(createDto.getInfo());
+            if(createDto.getStartedAt() != null) {
+                master.setStartedAt(LocalDate.ofEpochDay(createDto.getStartedAt()));
+            }
+            master.setCategory(createDto.getCategory());
+            master.setUser(saved);
+            Master savedMaster = masterRepository.save(master);
+
+//            saved.addMaster(savedMaster);
+        }
+
         emailService.sendApproveLink(createDto.getEmail());
 
-        return userRepository.save(user);
+        return userRepository.save(saved);
     }
 
     public User getById(Long id) {

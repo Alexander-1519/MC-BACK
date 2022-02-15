@@ -3,6 +3,7 @@ CREATE TABLE masters(
     started_at      TIMESTAMP WITHOUT TIME ZONE,
     info            VARCHAR(1024),
     category        VARCHAR(64),
+    user_id         BIGINT REFERENCES users(id) NOT NULL,
     created_at      TIMESTAMP WITHOUT TIME ZONE,
     updated_at      TIMESTAMP WITHOUT TIME ZONE,
     created_by      VARCHAR(64),

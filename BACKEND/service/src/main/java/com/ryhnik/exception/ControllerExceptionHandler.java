@@ -28,7 +28,7 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(MasterClubException.class)
     public ResponseEntity<ApiErrorResponse> masterClubExceptionHandler(MasterClubException exception) {
-//        logException(exception, exception.toString(), securityService.getUserId());
+        logException(exception, exception.toString());
         return buildException(exception, exception.getStatus());
     }
 
@@ -56,7 +56,7 @@ public class ControllerExceptionHandler {
     public ResponseEntity<ValidationErrorResponse> methodArgumentNotValidExceptionHandler(
             MethodArgumentNotValidException exception) {
         String exceptionId = MasterClubException.generateExceptionId();
-//        logException(exception, exceptionId, securityService.getUserId());
+        logException(exception, exceptionId);
 
         List<ValidationErrorField> errors = exception.getAllErrors().stream()
                 .map(p -> {
@@ -79,7 +79,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorResponse> constraintViolationExceptionHandler(ConstraintViolationException e) {
         String exceptionId = MasterClubException.generateExceptionId();
-//        logException(e, exceptionId, securityService.getUserId());
+        logException(e, exceptionId);
 
         List<String> errors = e.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
@@ -97,7 +97,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiErrorResponse> accessDeniedExceptionHandler(AccessDeniedException e) {
         String exceptionId = MasterClubException.generateExceptionId();
-//        logException(e, exceptionId, securityService.getUserId());
+        logException(e, exceptionId);
 
         ApiErrorResponse apiException = ApiResponseBuilder.builder(exceptionId)
                 .withMessage(e.getMessage())
@@ -120,7 +120,7 @@ public class ControllerExceptionHandler {
 
     private ResponseEntity<ApiErrorResponse> buildException(Exception e) {
         String exceptionId = MasterClubException.generateExceptionId();
-//        logException(e, exceptionId, securityService.getUserId());
+        logException(e, exceptionId);
 
         ApiErrorResponse apiException = ApiResponseBuilder.builder(exceptionId)
                 .withCode(Code.SYSTEM_ERROR.getIntValue())
@@ -131,7 +131,7 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
     }
 
-    private void logException(Exception exception, String exceptionId, String userId) {
-        logger.error("Exception: {}, Logged in user: {}", exceptionId, userId, exception);
+    private void logException(Exception exception, String exceptionId) {
+        logger.error("Exception: {}", exceptionId, exception);
     }
 }

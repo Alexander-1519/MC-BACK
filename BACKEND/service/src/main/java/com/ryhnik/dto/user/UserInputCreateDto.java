@@ -2,6 +2,8 @@ package com.ryhnik.dto.user;
 
 import com.ryhnik.entity.MasterCategory;
 
+import java.time.LocalDateTime;
+
 public class UserInputCreateDto {
 
     private String firstName;
