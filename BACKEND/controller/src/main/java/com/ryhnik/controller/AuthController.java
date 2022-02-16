@@ -3,6 +3,7 @@ package com.ryhnik.controller;
 import com.ryhnik.dto.user.*;
 import com.ryhnik.entity.User;
 import com.ryhnik.mapper.UserMapper;
+import com.ryhnik.service.EmailService;
 import com.ryhnik.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,14 @@ public class AuthController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final EmailService emailService;
 
-    public AuthController(UserService userService, UserMapper userMapper) {
+    public AuthController(UserService userService,
+                          UserMapper userMapper,
+                          EmailService emailService) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
@@ -50,9 +55,17 @@ public class AuthController {
                 .build();
     }
 
+    @PostMapping("/approve-email")
+    public ResponseEntity<Void> sendEmail(Principal principal) {
+        emailService.sendApproveLinkByUser(principal);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+    }
+
     @PostMapping("/approve-account")
     public ResponseEntity<Void> approveAccount(@RequestParam String email,
-                                               Principal principal){
+                                               Principal principal) {
         userService.approveAccount(email, principal.getName());
 
         return ResponseEntity.status(HttpStatus.OK)

@@ -2,16 +2,22 @@ package com.ryhnik.dto.user;
 
 import com.ryhnik.entity.MasterCategory;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserInputCreateDto {
 
     private String firstName;
     private String lastName;
+    @Size(min = 3, max = 25, message = "username should be between 3 and 25")
     private String username;
+    @Size(min = 6, max = 20, message = "password should be between 6 and 20")
     private String password;
+    @Email
     private String email;
     private String phone;
+    @NotNull
     private UserRoleDto role;
     private String info;
     private Long startedAt;

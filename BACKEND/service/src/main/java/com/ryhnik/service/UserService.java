@@ -84,8 +84,6 @@ public class UserService {
 //            saved.addMaster(savedMaster);
         }
 
-        emailService.sendApproveLink(createDto.getEmail());
-
         return userRepository.save(saved);
     }
 
