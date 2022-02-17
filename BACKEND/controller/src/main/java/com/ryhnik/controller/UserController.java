@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping(value = "api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Users", description = "API for users")
@@ -45,5 +47,13 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userMapper.toUserOutputDto(user));
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<UserOutputDto> getCurrentUser(Principal principal){
+        User currentUser = userService.getCurrentUser(principal.getName());
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(userMapper.toUserOutputDto(currentUser));
     }
 }

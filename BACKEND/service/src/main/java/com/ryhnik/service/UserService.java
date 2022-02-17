@@ -76,7 +76,7 @@ public class UserService {
         if (createDto.getRole() == UserRoleDto.MASTER) {
             Master master = new Master();
             master.setInfo(createDto.getInfo());
-            if(createDto.getStartedAt() != null) {
+            if (createDto.getStartedAt() != null) {
                 master.setStartedAt(LocalDate.ofEpochDay(createDto.getStartedAt()));
             }
             master.setCategory(createDto.getCategory());
@@ -121,7 +121,7 @@ public class UserService {
 
     public void approveAccount(String email) {
         boolean existsByEmail = userRepository.existsByEmail(email);
-        if(!existsByEmail){
+        if (!existsByEmail) {
             throw ExceptionBuilder.builder(Code.EMAIL_EXCEPTION)
                     .withMessage("Can't find email = " + email)
                     .build(MasterClubException.class);
@@ -133,5 +133,10 @@ public class UserService {
 
         user.setApproved(true);
         userRepository.save(user);
+    }
+
+    public User getCurrentUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchUserException(username));
     }
 }

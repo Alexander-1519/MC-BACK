@@ -11,10 +11,11 @@ public class UserOutputDto {
     private String firstName;
     private String lastName;
     private String username;
-    private String password;
     private String email;
     private String phone;
-    private String role;
+    private Boolean master;
+    private Boolean approved;
+    private Long role;
 
     public Long getId() {
         return id;
@@ -48,14 +49,6 @@ public class UserOutputDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -72,11 +65,27 @@ public class UserOutputDto {
         this.phone = phone;
     }
 
-    public String getRole() {
+    public Long getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Long role) {
         this.role = role;
+    }
+
+    public Boolean getMaster() {
+        return master;
+    }
+
+    public void setMaster(Boolean master) {
+        this.master = master;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 }
