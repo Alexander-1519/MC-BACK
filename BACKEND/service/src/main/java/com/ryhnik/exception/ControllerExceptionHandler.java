@@ -1,5 +1,6 @@
 package com.ryhnik.exception;
 
+import liquibase.pro.packaged.F;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -44,8 +46,8 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ApiErrorResponse> validationExceptionHandler(ValidationException exception) {
         Throwable cause = exception.getCause();
-        if (cause instanceof ConstraintViolationException e) {
-            return constraintViolationExceptionHandler(e);
+        if (cause instanceof ConstraintViolationException) {
+            return constraintViolationExceptionHandler((ConstraintViolationException) exception);
         } else if (cause instanceof MasterClubValidationException) {
             return buildException((Exception) cause);
         }
@@ -60,12 +62,13 @@ public class ControllerExceptionHandler {
 
         List<ValidationErrorField> errors = exception.getAllErrors().stream()
                 .map(p -> {
-                    if (p instanceof FieldError f) {
+                    if (p instanceof FieldError) {
+                        FieldError f = (FieldError) p;
                         return new ValidationErrorField(f.getField(), f.getDefaultMessage());
                     } else {
                         return new ValidationErrorField(p.getObjectName(), p.getDefaultMessage());
                     }
-                }).toList();
+                }).collect(Collectors.toList());
 
         ValidationErrorResponse apiException = ValidationResponseBuilder.builder(exceptionId)
                 .withMessage(VALIDATION_ERROR)
@@ -83,7 +86,7 @@ public class ControllerExceptionHandler {
 
         List<String> errors = e.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
-                .toList();
+                .collect(Collectors.toList());
 
         ApiErrorResponse apiException = ApiResponseBuilder.builder(exceptionId)
                 .withMessage(String.join(", ", errors))

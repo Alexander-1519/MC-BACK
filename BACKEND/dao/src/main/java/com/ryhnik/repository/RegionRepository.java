@@ -14,9 +14,6 @@ public interface RegionRepository extends JpaRepository<Region, Long> {
 
     Optional<Region> findByName(String name);
 
-    @Query("""
-            SELECT r FROM Region r
-            WHERE lower(r.name) LIKE lower(concat('%', :name, '%'))
-            """)
+    @Query("SELECT r FROM Region r WHERE lower(r.name) LIKE lower(concat('%', :name, '%'))")
     Page<Region> findAll(String name, Pageable pageable);
 }

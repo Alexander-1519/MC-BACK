@@ -8,9 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CityRepository extends JpaRepository<City, Long> {
 
-    @Query("""
-            SELECT c FROM City c
-            WHERE lower(c.name) LIKE lower(concat('%', :name, '%'))
-            """)
+    @Query("SELECT c FROM City c WHERE lower(c.name) LIKE lower(concat('%', :name, '%'))")
     Page<City> getAll(String name, Pageable pageable);
 }
