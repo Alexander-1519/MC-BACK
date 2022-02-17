@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN is_master BOOLEAN NOT NULL;

@@ -3,7 +3,6 @@ package com.ryhnik.service;
 import com.ryhnik.entity.Maintenance;
 import com.ryhnik.entity.Master;
 import com.ryhnik.exception.Code;
-import com.ryhnik.exception.EntityNotFoundException;
 import com.ryhnik.exception.ExceptionBuilder;
 import com.ryhnik.exception.MasterClubException;
 import com.ryhnik.repository.MaintenanceRepository;
@@ -30,7 +29,9 @@ public class MaintenanceService {
 
     public Maintenance create(String username, Long masterId, Maintenance maintenance) {
         Master master = masterRepository.findByUsernameAndMasterId(username, masterId)
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> ExceptionBuilder.builder(Code.MAINTENANCE_EXCEPTION)
+                        .withMessage("Can't find master with username = " + username)
+                        .build(MasterClubException.class));
 
         maintenance.setMaster(master);
         return maintenanceRepository.save(maintenance);
@@ -39,7 +40,7 @@ public class MaintenanceService {
     public void deleteById(Long masterId, Long maintenanceId) {
         boolean existsByIds = maintenanceRepository.existsByMasterIdAndMaintenanceId(masterId, maintenanceId);
         if (!existsByIds) {
-            throw ExceptionBuilder.builder(Code.UNEXPECTED)
+            throw ExceptionBuilder.builder(Code.MAINTENANCE_EXCEPTION)
                     .withMessage("Can't find maintenance on this master")
                     .build(MasterClubException.class);
         }

@@ -12,14 +12,14 @@ CREATE TABLE users(
         first_name      VARCHAR(255),
         last_name       VARCHAR(255),
         birthday        TIMESTAMP WITHOUT TIME ZONE,
-        username        VARCHAR(255),
-        password        VARCHAR(255),
+        username        VARCHAR(255) NOT NULL,
+        password        VARCHAR(255) NOt NULL,
         phone           VARCHAR(255),
-        email           VARCHAR(255),
+        email           VARCHAR(255) NOT NULL,
         image_url       VARCHAR(255),
-        role_id         BIGINT REFERENCES roles(id),
-        created_at      TIMESTAMP WITHOUT TIME ZONE,
-        updated_at      TIMESTAMP WITHOUT TIME ZONE,
-        created_by      VARCHAR(64),
-        updated_by      VARCHAR(64)
+        role_id         BIGINT REFERENCES roles(id) NOT NULL,
+        created_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        updated_at      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+        created_by      VARCHAR(64) NOT NULL,
+        updated_by      VARCHAR(64) NOT NULL
 );

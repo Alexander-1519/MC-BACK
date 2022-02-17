@@ -4,7 +4,9 @@ import com.ryhnik.dto.city.CityInputCreateDto;
 import com.ryhnik.entity.City;
 import com.ryhnik.entity.Region;
 import com.ryhnik.exception.Code;
-import com.ryhnik.exception.EntityNotFoundException;
+import com.ryhnik.exception.ExceptionBuilder;
+import com.ryhnik.exception.MasterClubException;
+import com.ryhnik.exception.NoSuchCityException;
 import com.ryhnik.repository.CityRepository;
 import com.ryhnik.repository.RegionRepository;
 import org.springframework.data.domain.Page;
@@ -24,7 +26,9 @@ public class CityService {
 
     public City save(CityInputCreateDto createDto) {
         Region region = repository.findByName(createDto.getRegion())
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> ExceptionBuilder.builder(Code.CITY_EXCEPTION)
+                        .withMessage("Can't find city with name = " + createDto.getRegion())
+                        .build(MasterClubException.class));
 
         City city = new City();
         city.setName(createDto.getName());
@@ -35,7 +39,7 @@ public class CityService {
 
     public City getById(Long id) {
         return cityRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> new NoSuchCityException(id));
     }
 
     public Page<City> getAll(String name, Pageable pageable) {

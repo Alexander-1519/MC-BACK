@@ -3,9 +3,9 @@ package com.ryhnik.service;
 import com.ryhnik.dto.master.filter.MasterFilterDto;
 import com.ryhnik.entity.Master;
 import com.ryhnik.exception.Code;
-import com.ryhnik.exception.EntityNotFoundException;
 import com.ryhnik.exception.ExceptionBuilder;
 import com.ryhnik.exception.MasterClubException;
+import com.ryhnik.exception.NoSuchMasterException;
 import com.ryhnik.repository.MasterRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +28,17 @@ public class MasterService {
 
     public Master updateById(Long masterId, Master masterUpd) {
         Master master = masterRepository.findById(masterId)
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> new NoSuchMasterException(masterId));
 
         master.setInfo(masterUpd.getInfo());
 
         return masterRepository.save(master);
     }
 
-    public void deleteById(Long masterId){
+    public void deleteById(Long masterId) {
         boolean existsById = masterRepository.existsById(masterId);
-        if(!existsById){
-            throw ExceptionBuilder.builder(Code.UNEXPECTED)
+        if (!existsById) {
+            throw ExceptionBuilder.builder(Code.MASTER_EXCEPTION)
                     .withMessage("Can't find master with id = " + masterId)
                     .build(MasterClubException.class);
         }

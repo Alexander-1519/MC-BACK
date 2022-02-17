@@ -63,10 +63,9 @@ public class AuthController {
                 .build();
     }
 
-    @PostMapping("/approve-account")
-    public ResponseEntity<Void> approveAccount(@RequestParam String email,
-                                               Principal principal) {
-        userService.approveAccount(email, principal.getName());
+    @GetMapping("/approve-account")
+    public ResponseEntity<Void> approveAccount(@RequestParam String email) {
+        userService.approveAccount(email);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .build();

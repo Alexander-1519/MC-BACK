@@ -39,6 +39,9 @@ public class User extends BaseAuditableEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(nullable = false)
+    private Boolean isMaster;
+
     @OneToMany
     private List<Master> masters;
 
@@ -145,5 +148,9 @@ public class User extends BaseAuditableEntity {
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
+    }
+
+    public void setMaster(Boolean master) {
+        isMaster = master;
     }
 }

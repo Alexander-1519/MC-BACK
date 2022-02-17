@@ -4,6 +4,8 @@ import com.ryhnik.entity.SecurityUser;
 import com.ryhnik.entity.User;
 import com.ryhnik.exception.Code;
 import com.ryhnik.exception.EntityNotFoundException;
+import com.ryhnik.exception.ExceptionBuilder;
+import com.ryhnik.exception.MasterClubException;
 import com.ryhnik.repository.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,10 @@ public class UserSecurityService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> ExceptionBuilder.builder(Code.USER_EXCEPTION)
+                        .withMessage("Can't find user with username = " + username)
+                        .build(MasterClubException.class));
+
         return SecurityUser.fromEntityToCustomUser(user);
     }
 }

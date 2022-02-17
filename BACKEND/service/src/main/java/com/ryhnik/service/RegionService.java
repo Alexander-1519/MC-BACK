@@ -2,9 +2,9 @@ package com.ryhnik.service;
 
 import com.ryhnik.entity.Region;
 import com.ryhnik.exception.Code;
-import com.ryhnik.exception.EntityNotFoundException;
 import com.ryhnik.exception.ExceptionBuilder;
 import com.ryhnik.exception.MasterClubException;
+import com.ryhnik.exception.NoSuchRegionException;
 import com.ryhnik.repository.RegionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +21,8 @@ public class RegionService {
 
     public Region save(Region region) {
         if (regionRepository.existsByName(region.getName())) {
-            throw ExceptionBuilder.builder(Code.UNEXPECTED)
-                    .withMessage("Region name is already exists.")
+            throw ExceptionBuilder.builder(Code.REGION_NOT_FOUND)
+                    .withMessage("Region name is already exists")
                     .build(MasterClubException.class);
         }
 
@@ -31,12 +31,14 @@ public class RegionService {
 
     public Region getById(Long id) {
         return regionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> new NoSuchRegionException(id));
     }
 
     public Region getByName(String name) {
         return regionRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException(Code.UNEXPECTED));
+                .orElseThrow(() -> ExceptionBuilder.builder(Code.REGION_NOT_FOUND)
+                        .withMessage("Can't find region with name = " + name)
+                        .build(MasterClubException.class));
     }
 
     public Page<Region> findAll(String name, Pageable pageable) {

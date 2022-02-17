@@ -48,9 +48,8 @@ public class EmailService {
         message.setTo(email);
         message.setSubject(SUBJECT);
 
-        String url = "localhost:8080/api/v1/approve-account?email=" + email;
-        String approvalLink = "<a href=\"" + url + "\">approve account</a>";
-        message.setText(approvalLink);
+        String url = "http://localhost:8080/api/v1/approve-account?email=" + email;
+        message.setText(url);
 
         javaMailSender.send(message);
     }
