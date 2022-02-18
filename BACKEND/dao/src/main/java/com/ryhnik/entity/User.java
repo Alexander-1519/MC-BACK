@@ -42,17 +42,17 @@ public class User extends BaseAuditableEntity {
     @Column(nullable = false)
     private Boolean isMaster;
 
-    @OneToMany
-    private List<Master> masters;
+    @OneToOne
+    private Master master;
 
     private Boolean approved;
 
-    public void addMaster(Master master) {
-        if (masters == null) {
-            masters = new ArrayList<>();
-        }
-        masters.add(master);
-    }
+//    public void addMaster(Master master) {
+//        if (masters == null) {
+//            masters = new ArrayList<>();
+//        }
+//        masters.add(master);
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -134,12 +134,8 @@ public class User extends BaseAuditableEntity {
         isMaster = master;
     }
 
-    public List<Master> getMasters() {
-        return masters;
-    }
-
-    public void setMasters(List<Master> masters) {
-        this.masters = masters;
+    public void setMaster(Master master) {
+        this.master = master;
     }
 
     public Boolean getApproved() {

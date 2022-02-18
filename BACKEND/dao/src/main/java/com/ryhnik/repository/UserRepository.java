@@ -1,5 +1,6 @@
 package com.ryhnik.repository;
 
+import com.ryhnik.entity.Master;
 import com.ryhnik.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

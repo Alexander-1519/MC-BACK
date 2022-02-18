@@ -52,6 +52,7 @@ public class MaintenanceController {
                 .build();
     }
 
+    @GetMapping
     public ResponseEntity<PageDto<MaintenanceOutputDto>> findAll(@PathVariable Long masterId, Pageable pageable){
         Page<Maintenance> maintenances = maintenanceService.findAll(masterId, pageable);
 
