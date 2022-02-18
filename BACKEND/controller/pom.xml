@@ -59,6 +59,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                    <environmentVariables>
+                        <DB_NAME>master-club</DB_NAME>
+                        <DB_USERNAME></DB_USERNAME>
+                        <DB_PASSWORD></DB_PASSWORD>
+                    </environmentVariables>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
