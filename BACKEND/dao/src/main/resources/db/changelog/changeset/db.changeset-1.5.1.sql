@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN master_id BIGINT;

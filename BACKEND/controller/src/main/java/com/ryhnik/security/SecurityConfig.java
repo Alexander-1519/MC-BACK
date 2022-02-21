@@ -49,8 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v3/api-docs/**")
                 .antMatchers("/api/v1/users/signup")
                 .antMatchers("/api/v1/users/verify")
-                .antMatchers("/api/v1/users/set-password")
-                .antMatchers("/api/v1/**");
+                .antMatchers("/api/v1/users/set-password");
     }
 
     @Bean
