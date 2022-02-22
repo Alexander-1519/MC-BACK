@@ -31,5 +31,6 @@ public interface MasterMapper {
     MasterFullOutputDto toFullOutputDto(Master master);
 
     @Mapping(target = "images", ignore = true)
+    @Mapping(target = "startedAt", expression = "java(java.time.LocalDate.ofInstant(java.time.Instant.ofEpochMilli(inputCreateDto.getStartedAt()), java.util.TimeZone.getDefault().toZoneId()))")
     Master toMaster(MasterFullInputCreateDto inputCreateDto);
 }
