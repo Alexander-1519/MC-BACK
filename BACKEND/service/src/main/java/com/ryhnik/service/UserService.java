@@ -72,7 +72,7 @@ public class UserService {
 
         user.setRole(role);
 
-        user.setMaster(false);
+        user.setIsMaster(false);
         user.setApproved(false);
 
         User saved = userRepository.save(user);
@@ -85,7 +85,7 @@ public class UserService {
             }
             master.setCategory(createDto.getCategory());
             master.setUser(saved);
-            user.setMaster(true);
+            user.setIsMaster(true);
             masterRepository.save(master);
         }
 

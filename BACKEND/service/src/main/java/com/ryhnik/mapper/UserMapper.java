@@ -14,6 +14,7 @@ public interface UserMapper {
 
     @Mapping(target = "role", source = "role.id")
     @Mapping(target = "masterId", source = "master.id")
+    @Mapping(target = "master", source = "isMaster")
     UserOutputDto toUserOutputDto(User user);
 
     User toUser(UserInputCreateDto dto);
