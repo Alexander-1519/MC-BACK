@@ -15,6 +15,7 @@ public class UserOutputDto {
     private String phone;
     private Boolean master;
     private Boolean approved;
+    private Long masterId;
     private Long role;
 
     public Long getId() {
@@ -87,5 +88,13 @@ public class UserOutputDto {
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
+    }
+
+    public Long getMasterId() {
+        return masterId;
+    }
+
+    public void setMasterId(Long masterId) {
+        this.masterId = masterId;
     }
 }

@@ -43,7 +43,7 @@ public class User extends BaseAuditableEntity {
     private Boolean isMaster;
 
     @OneToOne
-    private Master master;
+    private Master masterObj;
 
     private Boolean approved;
 
@@ -134,12 +134,16 @@ public class User extends BaseAuditableEntity {
         isMaster = master;
     }
 
-    public void setMaster(Master master) {
-        this.master = master;
-    }
-
     public Boolean getApproved() {
         return approved;
+    }
+
+    public Master getMasterObj() {
+        return masterObj;
+    }
+
+    public void setMasterObj(Master masterObj) {
+        this.masterObj = masterObj;
     }
 
     public void setApproved(Boolean approved) {

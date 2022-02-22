@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 public interface UserMapper {
 
     @Mapping(target = "role", source = "role.id")
+    @Mapping(target = "masterId", source = "masterObj.id")
     UserOutputDto toUserOutputDto(User user);
 
     User toUser(UserInputCreateDto dto);
