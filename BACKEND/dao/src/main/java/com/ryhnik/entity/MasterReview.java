@@ -5,7 +5,7 @@ import com.ryhnik.entity.core.BaseAuditableEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "master_reviews")
+@Table(name = "masters_reviews")
 public class MasterReview extends BaseAuditableEntity {
 
     @Column(nullable = false)

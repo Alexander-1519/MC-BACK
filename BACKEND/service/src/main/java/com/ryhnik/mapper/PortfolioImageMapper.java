@@ -13,7 +13,7 @@ import java.util.List;
 public interface PortfolioImageMapper {
 
     @Mapping(target = "masterId", source = "master.id")
-    PortfolioImageOutputDto toOutputDto(PortfolioImage portfolioImage);
+    PortfolioImageOutputDto toPortfolioOutputDto(PortfolioImage portfolioImage);
 
-    List<PortfolioImageOutputDto> toOutputDto(List<PortfolioImage> portfolioImages);
+    List<PortfolioImageOutputDto> toPortfolioOutputDto(List<PortfolioImage> portfolioImages);
 }

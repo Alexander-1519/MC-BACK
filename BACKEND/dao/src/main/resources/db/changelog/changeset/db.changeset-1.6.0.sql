@@ -1,4 +1,4 @@
-CREATE TABLE master_reviews
+CREATE TABLE masters_reviews
 (
     id              BIGSERIAL PRIMARY KEY,
     review          VARCHAR(1024) NOT NULL,

@@ -4,6 +4,7 @@ import com.ryhnik.entity.core.BaseAuditableEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,7 @@ public class Master extends BaseAuditableEntity {
     private List<PortfolioImage> images;
 
     @OneToMany
-    private List<MasterReview> reviews;
+    private List<MasterReview> reviews = new ArrayList<>();
 
     public MasterCategory getCategory() {
         return category;

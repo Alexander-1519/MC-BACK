@@ -1,15 +1,14 @@
 package com.ryhnik.service;
 
 import com.ryhnik.dto.master.filter.MasterFilterDto;
-import com.ryhnik.entity.Maintenance;
-import com.ryhnik.entity.MaintenanceDate;
-import com.ryhnik.entity.Master;
+import com.ryhnik.entity.*;
 import com.ryhnik.exception.Code;
 import com.ryhnik.exception.ExceptionBuilder;
 import com.ryhnik.exception.MasterClubException;
 import com.ryhnik.exception.NoSuchMasterException;
 import com.ryhnik.repository.MasterRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -85,7 +84,21 @@ public class MasterService {
     }
 
     public Master getById(Long id) {
-        return masterRepository.findById(id)
+        Master master = masterRepository.findById(id)
                 .orElseThrow(() -> new NoSuchMasterException(id));
+
+        List<PortfolioImage> allImagesByMasterId = portfolioImageService.getAllImagesByMasterId(id);
+        master.setImages(allImagesByMasterId);
+
+        List<MasterReview> content = masterReviewService.getAll(id, PageRequest.of(0, 10)).getContent();
+        master.setReviews(content);
+
+        List<MaintenanceDate> content1 = maintenanceDateService.findAll(master.getUser().getUsername(), PageRequest.of(0, 10)).getContent();
+        master.setDates(content1);
+
+        List<Maintenance> content2 = maintenanceService.findAll(id, PageRequest.of(0, 10)).getContent();
+        master.setMaintenances(content2);
+
+        return master;
     }
 }
