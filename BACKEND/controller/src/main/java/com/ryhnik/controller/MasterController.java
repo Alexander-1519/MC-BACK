@@ -1,5 +1,6 @@
 package com.ryhnik.controller;
 
+import com.ryhnik.dto.master.MasterFullOutputDto;
 import com.ryhnik.dto.master.MasterInputUpdateDto;
 import com.ryhnik.dto.master.MasterOutputDto;
 import com.ryhnik.entity.Master;
@@ -39,5 +40,13 @@ public class MasterController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MasterFullOutputDto> getById(@PathVariable Long id) {
+        Master master = masterService.getById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(masterMapper.toFullOutputDto(master));
     }
 }

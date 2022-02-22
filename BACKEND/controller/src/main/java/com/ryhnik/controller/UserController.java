@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
@@ -50,10 +51,28 @@ public class UserController {
     }
 
     @GetMapping("/current-user")
-    public ResponseEntity<UserOutputDto> getCurrentUser(Principal principal){
+    public ResponseEntity<UserOutputDto> getCurrentUser(Principal principal) {
         User currentUser = userService.getCurrentUser(principal.getName());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(userMapper.toUserOutputDto(currentUser));
+    }
+
+    @PostMapping("/{id}/photo")
+    public ResponseEntity<String> saveAvatar(@RequestBody MultipartFile multipartFile,
+                                             @PathVariable Long id,
+                                             Principal principal) {
+        String url = userService.saveAvatar(multipartFile, principal.getName());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(url);
+    }
+
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<String> getAvatarById(@PathVariable Long id, Principal principal) {
+        String url = userService.getAvatarById(id);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(url);
     }
 }

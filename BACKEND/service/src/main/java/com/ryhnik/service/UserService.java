@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -32,6 +33,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final MasterRepository masterRepository;
     private final EmailService emailService;
+    private final FileService fileService;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
@@ -39,7 +41,8 @@ public class UserService {
                        RoleRepository roleRepository,
                        UserMapper userMapper,
                        MasterRepository masterRepository,
-                       EmailService emailService) {
+                       EmailService emailService,
+                       FileService fileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
@@ -47,6 +50,7 @@ public class UserService {
         this.userMapper = userMapper;
         this.masterRepository = masterRepository;
         this.emailService = emailService;
+        this.fileService = fileService;
     }
 
     @Transactional
@@ -138,5 +142,16 @@ public class UserService {
     public User getCurrentUser(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchUserException(username));
+    }
+
+    public String saveAvatar(MultipartFile multipartFile, String username) {
+        return fileService.saveAvatar(multipartFile, username);
+    }
+
+    public String getAvatarById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Code.USER_NOT_FOUND));
+
+        return fileService.findByName(user.getUsername()).getHttpRequest().getRequestLine().getUri();
     }
 }

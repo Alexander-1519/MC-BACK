@@ -2,12 +2,14 @@ package com.ryhnik.service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +40,6 @@ public class FileService {
         return file;
     }
 
-    // @Async annotation ensures that the method is executed in a different thread
-
     public S3ObjectInputStream findByName(String fileName) {
         LOG.info("Downloading file with name {}", fileName);
         S3Object object = amazonS3.getObject(s3BucketName, fileName);
@@ -51,11 +51,27 @@ public class FileService {
             final File file = convertMultiPartFileToFile(multipartFile);
             final String fileName = LocalDateTime.now() + "_" + file.getName();
             LOG.info("Uploading file with name {}", fileName);
-//            final PutObjectRequest putObjectRequest = new PutObjectRequest(s3BucketName, fileName, file);
             final PutObjectRequest putObjectRequest = new PutObjectRequest(s3BucketName, fileName, file);
             putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
-            PutObjectResult putObjectResult = amazonS3.putObject(putObjectRequest);
-            Files.delete(file.toPath()); // Remove the file locally created in the project folder
+            amazonS3.putObject(putObjectRequest);
+            Files.delete(file.toPath());
+            return fileName;
+        } catch (AmazonServiceException e) {
+            LOG.error("Error {} occurred while uploading file", e.getLocalizedMessage());
+        } catch (IOException ex) {
+            LOG.error("Error {} occurred while deleting temporary file", ex.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public String saveAvatar(final MultipartFile multipartFile, final String fileName) {
+        try {
+            final File file = convertMultiPartFileToFile(multipartFile);
+            LOG.info("Uploading file with name {}", fileName);
+            final PutObjectRequest putObjectRequest = new PutObjectRequest(s3BucketName, fileName, file);
+            putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+            amazonS3.putObject(putObjectRequest);
+            Files.delete(file.toPath());
             return fileName;
         } catch (AmazonServiceException e) {
             LOG.error("Error {} occurred while uploading file", e.getLocalizedMessage());

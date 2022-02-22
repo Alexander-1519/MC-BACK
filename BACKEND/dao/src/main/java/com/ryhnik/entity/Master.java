@@ -25,6 +25,15 @@ public class Master extends BaseAuditableEntity {
     @OneToMany
     private List<MaintenanceDate> dates;
 
+    @OneToMany
+    private List<Maintenance> maintenances;
+
+    @OneToMany
+    private List<PortfolioImage> images;
+
+    @OneToMany
+    private List<MasterReview> reviews;
+
     public MasterCategory getCategory() {
         return category;
     }
@@ -63,5 +72,29 @@ public class Master extends BaseAuditableEntity {
 
     public void setDates(List<MaintenanceDate> dates) {
         this.dates = dates;
+    }
+
+    public List<Maintenance> getMaintenances() {
+        return maintenances;
+    }
+
+    public void setMaintenances(List<Maintenance> maintenances) {
+        this.maintenances = maintenances;
+    }
+
+    public List<PortfolioImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<PortfolioImage> images) {
+        this.images = images;
+    }
+
+    public List<MasterReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<MasterReview> reviews) {
+        this.reviews = reviews;
     }
 }
