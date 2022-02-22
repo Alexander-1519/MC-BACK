@@ -77,6 +77,7 @@ public class UserService {
 
         User saved = userRepository.save(user);
 
+        Master savedMaster = null;
         if (createDto.getRole() == UserRoleDto.MASTER) {
             Master master = new Master();
             master.setInfo(createDto.getInfo());
@@ -86,9 +87,10 @@ public class UserService {
             master.setCategory(createDto.getCategory());
             master.setUser(saved);
             user.setIsMaster(true);
-            masterRepository.save(master);
+            savedMaster = masterRepository.save(master);
         }
 
+        saved.setMaster(savedMaster);
         return userRepository.save(saved);
     }
 
