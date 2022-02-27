@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MasterReviewService {
 
@@ -69,5 +71,9 @@ public class MasterReviewService {
         }
 
         masterReviewRepository.deleteById(id);
+    }
+
+    public List<MasterReview> getAllByUserId(Long userId) {
+        return masterReviewRepository.findAllByUserId(userId);
     }
 }

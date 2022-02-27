@@ -67,4 +67,12 @@ public class MaintenanceDateService {
     public Page<MaintenanceDate> findAll(String username, Pageable pageable) {
         return maintenanceDateRepository.findAll(username, pageable);
     }
+
+    public List<MaintenanceDate> getAllByUserId(Long id){
+        return maintenanceDateRepository.findByUserId(id);
+    }
+
+    public List<MaintenanceDate> createAll(List<MaintenanceDate> dates) {
+        return maintenanceDateRepository.saveAll(dates);
+    }
 }

@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MaintenanceService {
 
@@ -50,5 +52,21 @@ public class MaintenanceService {
 
     public Page<Maintenance> findAll(Long masterId, Pageable pageable) {
         return maintenanceRepository.findAll(masterId, pageable);
+    }
+
+    public List<Maintenance> getAllByUserId(Long userId) {
+        return maintenanceRepository.findAllByUserId(userId);
+    }
+
+    public Maintenance simpleCreate(Maintenance maintenance) {
+        return maintenanceRepository.save(maintenance);
+    }
+
+    public void simpleDelete(Maintenance maintenance) {
+        maintenanceRepository.delete(maintenance);
+    }
+
+    public List<Maintenance> createAll(List<Maintenance> maintenances){
+        return maintenanceRepository.saveAll(maintenances);
     }
 }

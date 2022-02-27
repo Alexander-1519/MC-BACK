@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,36 +71,40 @@ public class MasterService {
         master.setInfo(createMaster.getInfo());
         master.setStartedAt(createMaster.getStartedAt());
 
-        List<Maintenance> maintenances = createMaster.getMaintenances();
-        maintenances.stream().filter(m -> m.getId() == null).map(m -> {
-            return maintenanceService.create(username, masterId, m);
-        });
+        List<Maintenance> maintenances = createMaster.getMaintenances().stream()
+                .peek(m -> m.setMaster(master)).collect(Collectors.toList());
+        maintenanceService.createAll(maintenances);
 
-        List<MaintenanceDate> dates = createMaster.getDates();
-        List<MaintenanceDate> dateList = dates.stream().filter(d -> d.getId() == null).collect(Collectors.toList());
-        maintenanceDateService.create(dateList, username);
+        List<MaintenanceDate> dates = createMaster.getDates().stream()
+                .peek(m -> m.setMaster(master)).collect(Collectors.toList());
+        maintenanceDateService.createAll(dates);
 
         portfolioImageService.create(images, username);
 
-        return masterRepository.save(master);
+        Master savedMaster = masterRepository.save(master);
+        return getById(savedMaster.getId());
     }
 
-    public Master getById(Long id) {
-        Master master = masterRepository.findById(id)
-                .orElseThrow(() -> new NoSuchMasterException(id));
+    public Master getById(Long userId) {
+        Master master = masterRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchMasterException(userId));
 
-        List<PortfolioImage> allImagesByMasterId = portfolioImageService.getAllImagesByMasterId(id);
+        List<PortfolioImage> allImagesByMasterId = portfolioImageService.getAllImagesByMasterId(userId);
         master.setImages(allImagesByMasterId);
 
-        List<MasterReview> content = masterReviewService.getAll(id, PageRequest.of(0, 10)).getContent();
-        master.setReviews(content);
+        List<MasterReview> reviews = masterReviewService.getAllByUserId(userId);
+        master.setReviews(reviews);
 
-        List<MaintenanceDate> content1 = maintenanceDateService.findAll(master.getUser().getUsername(), PageRequest.of(0, 10)).getContent();
-        master.setDates(content1);
+        List<MaintenanceDate> maintenanceDates = maintenanceDateService.getAllByUserId(userId);
+        master.setDates(maintenanceDates);
 
-        List<Maintenance> content2 = maintenanceService.findAll(id, PageRequest.of(0, 10)).getContent();
-        master.setMaintenances(content2);
+        List<Maintenance> maintenances = maintenanceService.getAllByUserId(userId);
+        master.setMaintenances(maintenances);
 
         return master;
+    }
+
+    public void simpleSaveAllData() {
+
     }
 }

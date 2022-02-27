@@ -27,4 +27,7 @@ public interface MaintenanceDateRepository extends JpaRepository<MaintenanceDate
             "JOIN md.master.user u " +
             "WHERE u.username = :username")
     Page<MaintenanceDate> findAll(String username, Pageable pageable);
+
+    @Query("SELECT md FROM MaintenanceDate md WHERE md.master.user.id = :id")
+    List<MaintenanceDate> findByUserId(Long id);
 }
