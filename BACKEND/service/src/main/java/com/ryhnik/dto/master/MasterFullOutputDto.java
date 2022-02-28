@@ -11,7 +11,7 @@ import java.util.List;
 public class MasterFullOutputDto {
 
     private String info;
-    private LocalDate startedAt;
+    private Long startedAt;
     private List<MasterReviewOutputDto> reviews;
     private List<PortfolioImageOutputDto> images;
     private List<MaintenanceDateOutputDto> dates;
@@ -25,11 +25,11 @@ public class MasterFullOutputDto {
         this.info = info;
     }
 
-    public LocalDate getStartedAt() {
+    public Long getStartedAt() {
         return startedAt;
     }
 
-    public void setStartedAt(LocalDate startedAt) {
+    public void setStartedAt(Long startedAt) {
         this.startedAt = startedAt;
     }
 

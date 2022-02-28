@@ -13,7 +13,7 @@ public class MasterFullInputCreateDto {
     private Long startedAt;
     private List<MaintenanceInputCreateDto> maintenances;
     private List<MaintenanceDateInputCreateDto> dates;
-    private List<MultipartFile> images;
+    private List<PortfolioImage> images;
 
     public String getInfo() {
         return info;
@@ -47,11 +47,11 @@ public class MasterFullInputCreateDto {
         this.dates = dates;
     }
 
-    public List<MultipartFile> getImages() {
+    public List<PortfolioImage> getImages() {
         return images;
     }
 
-    public void setImages(List<MultipartFile> images) {
+    public void setImages(List<PortfolioImage> images) {
         this.images = images;
     }
 }

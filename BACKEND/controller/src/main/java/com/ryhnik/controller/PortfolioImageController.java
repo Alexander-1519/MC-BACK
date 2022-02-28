@@ -32,7 +32,7 @@ public class PortfolioImageController {
         this.portfolioImageMapper = portfolioImageMapper;
     }
 
-    @PostMapping
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<PortfolioImageOutputDto>> uploadFile(@RequestBody List<MultipartFile> files,
                                                                     Principal principal) {
         List<PortfolioImage> portfolioImages = imageService.create(files, principal.getName());

@@ -56,12 +56,14 @@ public class MasterController {
                 .body(masterMapper.toFullOutputDto(master));
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<MasterFullOutputDto> save(@RequestBody MasterFullInputCreateDto createDto,
-                                                    @PathVariable Long id,
-                                                    @RequestBody List<MultipartFile> images,
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST,
+            consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<MasterFullOutputDto> save(
+            @PathVariable Long id,
+            @RequestPart(value = "createDto") MasterFullInputCreateDto createDto,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images,
                                                     Principal principal) {
-        Master master = masterService.saveMasterInfo(masterMapper.toMaster(createDto), images, principal.getName(), id);
+        Master master = masterService.saveAll(masterMapper.toMaster(createDto), images, principal.getName(), id);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(masterMapper.toFullOutputDto(master));
