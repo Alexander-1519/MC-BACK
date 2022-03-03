@@ -28,9 +28,11 @@ public interface MasterMapper {
 
     PageDto<MasterOutputDto> toPageDto(Page<Master> masters, Pageable pageable);
 
-    @Mapping(target = "startedAt", expression = "java(master.getStartedAt().toEpochSecond(java.time.LocalTime.MAX, java.time.ZoneOffset.UTC))")
+//    @Mapping(target = "startedAt", expression = "java(master.getStartedAt().toEpochSecond(java.time.LocalTime.MAX, java.time.ZoneOffset.UTC))")
+    @Mapping(target = "startedAt", ignore = true)
     MasterFullOutputDto toFullOutputDto(Master master);
 
-    @Mapping(target = "startedAt", expression = "java(java.time.LocalDate.ofInstant(java.time.Instant.ofEpochMilli(inputCreateDto.getStartedAt()), java.util.TimeZone.getDefault().toZoneId()))")
+//    @Mapping(target = "startedAt", expression = "java(java.time.LocalDate.ofInstant(java.time.Instant.ofEpochMilli(inputCreateDto.getStartedAt()), java.util.TimeZone.getDefault().toZoneId()))")
+    @Mapping(target = "startedAt", ignore = true)
     Master toMaster(MasterFullInputCreateDto inputCreateDto);
 }
