@@ -11,6 +11,7 @@ import java.util.List;
 public class MasterFullOutputDto {
 
     private String info;
+    private String username;
     private Long startedAt;
     private List<MasterReviewOutputDto> reviews;
     private List<PortfolioImageOutputDto> images;
@@ -63,5 +64,13 @@ public class MasterFullOutputDto {
 
     public void setMaintenances(List<MaintenanceOutputDto> maintenances) {
         this.maintenances = maintenances;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
