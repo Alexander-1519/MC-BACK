@@ -1,5 +1,6 @@
 package com.ryhnik.service;
 
+import com.ryhnik.dto.master.MasterFullInputCreateDto;
 import com.ryhnik.dto.master.filter.MasterFilterDto;
 import com.ryhnik.entity.*;
 import com.ryhnik.exception.Code;
@@ -224,4 +225,38 @@ public class MasterService {
 
         return getById(masterRepository.save(master).getId());
     }
+
+    //TODO set startedAt
+    public Master updateInfo(Long masterId, Master updatedMaster, List<MultipartFile> images) {
+        Master master = masterRepository.findById(masterId)
+                .orElseThrow(() -> new NoSuchMasterException(masterId));
+
+        updatedMasterInfo(master, updatedMaster);
+
+        for(Maintenance maintenance: master.getMaintenances()){
+            maintenance.setMaster(master);
+        }
+        for(MaintenanceDate date: master.getDates()){
+            date.setMaster(master);
+        }
+        for(MasterReview review: master.getReviews()){
+            review.setMaster(master);
+        }
+
+
+        return masterRepository.save(master);
+    }
+
+    private void updatedMasterInfo(Master masterToUpdate, Master updatedMaster) {
+        masterToUpdate.setInfo(updatedMaster.getInfo());
+        masterToUpdate.setDates(updatedMaster.getDates());
+        masterToUpdate.setMaintenances(updatedMaster.getMaintenances());
+        masterToUpdate.setReviews(updatedMaster.getReviews());
+    }
+
+    public Master findMasterById(Long id) {
+        return masterRepository.findById(id)
+                .orElseThrow(() -> new NoSuchMasterException(id));
+    }
+
 }

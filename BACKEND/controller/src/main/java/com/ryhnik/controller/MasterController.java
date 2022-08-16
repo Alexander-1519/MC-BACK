@@ -32,12 +32,13 @@ public class MasterController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MasterOutputDto> updateById(@PathVariable Long id,
-                                                      @RequestBody MasterInputUpdateDto updateDto) {
-        Master master = masterService.updateById(id, masterMapper.toMaster(updateDto));
+    public ResponseEntity<MasterFullOutputDto> updateById(@PathVariable Long id,
+                                                      @RequestPart(value = "createDto") MasterFullInputCreateDto createDto,
+                                                      @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+        Master master = masterService.updateInfo(id, masterMapper.toMaster(createDto), images);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(masterMapper.toOutputDto(master));
+                .body(masterMapper.toFullOutputDto(master));
     }
 
     @DeleteMapping("/{id}")
@@ -50,7 +51,7 @@ public class MasterController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MasterFullOutputDto> getById(@PathVariable Long id) {
-        Master master = masterService.getById(id);
+        Master master = masterService.findMasterById(id);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(masterMapper.toFullOutputDto(master));
@@ -61,8 +62,9 @@ public class MasterController {
     public ResponseEntity<MasterFullOutputDto> save(
             @PathVariable Long id,
             @RequestPart(value = "createDto") MasterFullInputCreateDto createDto,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images,
                                                     Principal principal) {
-        Master master = masterService.saveAllMasterInfo(masterMapper.toMaster(createDto), null, principal.getName(), id);
+        Master master = masterService.updateInfo(id, masterMapper.toMaster(createDto), images);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(masterMapper.toFullOutputDto(master));

@@ -23,16 +23,16 @@ public class Master extends BaseAuditableEntity {
 //    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "master")
     private List<MaintenanceDate> dates;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "master")
     private List<Maintenance> maintenances;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "master")
     private List<PortfolioImage> images;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "master")
     private List<MasterReview> reviews = new ArrayList<>();
 
     public MasterCategory getCategory() {
