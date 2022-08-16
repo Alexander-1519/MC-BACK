@@ -61,9 +61,8 @@ public class MasterController {
     public ResponseEntity<MasterFullOutputDto> save(
             @PathVariable Long id,
             @RequestPart(value = "createDto") MasterFullInputCreateDto createDto,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images,
                                                     Principal principal) {
-        Master master = masterService.saveAllMasterInfo(masterMapper.toMaster(createDto), images, principal.getName(), id);
+        Master master = masterService.saveAllMasterInfo(masterMapper.toMaster(createDto), null, principal.getName(), id);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(masterMapper.toFullOutputDto(master));

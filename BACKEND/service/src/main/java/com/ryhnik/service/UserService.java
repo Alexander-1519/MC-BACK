@@ -1,5 +1,6 @@
 package com.ryhnik.service;
 
+import com.dropbox.core.DbxException;
 import com.ryhnik.dto.user.UserAuth;
 import com.ryhnik.dto.user.UserAuthRequest;
 import com.ryhnik.dto.user.UserInputCreateDto;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Service
@@ -34,6 +36,7 @@ public class UserService {
     private final MasterRepository masterRepository;
     private final EmailService emailService;
     private final FileService fileService;
+    private final DropBoxService dropBoxService;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
@@ -42,7 +45,8 @@ public class UserService {
                        UserMapper userMapper,
                        MasterRepository masterRepository,
                        EmailService emailService,
-                       FileService fileService) {
+                       FileService fileService,
+                       DropBoxService dropBoxService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
@@ -51,6 +55,7 @@ public class UserService {
         this.masterRepository = masterRepository;
         this.emailService = emailService;
         this.fileService = fileService;
+        this.dropBoxService = dropBoxService;
     }
 
     @Transactional
@@ -146,14 +151,22 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchUserException(username));
     }
 
-    public String saveAvatar(MultipartFile multipartFile, String username) {
-        return fileService.saveAvatar(multipartFile, username);
+    @Transactional
+    public String saveAvatar(MultipartFile multipartFile, Long id) throws IOException, DbxException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Code.USER_NOT_FOUND));
+
+        String url = dropBoxService.saveImage(multipartFile);
+
+        user.setImageUrl(url);
+
+        return url;
     }
 
     public String getAvatarById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Code.USER_NOT_FOUND));
 
-        return fileService.findByName(user.getUsername()).getHttpRequest().getRequestLine().getUri();
+        return user.getImageUrl();
     }
 }

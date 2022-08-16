@@ -1,5 +1,6 @@
 package com.ryhnik.controller;
 
+import com.dropbox.core.DbxException;
 import com.ryhnik.dto.core.PageDto;
 import com.ryhnik.dto.user.UserOutputDto;
 import com.ryhnik.entity.User;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @RestController
@@ -61,8 +63,8 @@ public class UserController {
     @PostMapping("/{id}/photo")
     public ResponseEntity<String> saveAvatar(@RequestBody MultipartFile multipartFile,
                                              @PathVariable Long id,
-                                             Principal principal) {
-        String url = userService.saveAvatar(multipartFile, principal.getName());
+                                             Principal principal) throws IOException, DbxException {
+        String url = userService.saveAvatar(multipartFile, id);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(url);
