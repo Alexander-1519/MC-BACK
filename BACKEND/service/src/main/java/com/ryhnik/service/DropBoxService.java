@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class DropBoxService {
 
     private final static Logger LOG = LoggerFactory.getLogger(DropBoxService.class);
-    private final static String ACCESS_TOKEN = "sl.BNZYuq9EI_CMVwoIT2AE-piXD93Ii1NkQxf1LxQfvV8zSqm2j-x6pIHNOtVr2Of5ScM7H7RYgYRrpLFrm4-flycDDvZpe5mzKTpTZmcf8O1Z21BLzZf-5Lxd57TMpzN-GHcOMs7fYcsz";
+    private final static String ACCESS_TOKEN = "sl.BNeG2IcDU-1p8G1TBHaLTQLrxy2f73NQjEZM79DdfUZnQ0pnn6QTG_dfAu3QRlhTSwyrJ8j-nNyr6t5qIJY-_IwWPJczkxHV6pBzH_Lrb4Bg1NOpq2SOu6DEFlzXKxRETi23Os3IJRxr";
 
     private File convertMultiPartFileToFile(final MultipartFile multipartFile) {
         final File file = new File(multipartFile.getOriginalFilename());
